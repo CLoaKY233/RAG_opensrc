@@ -2,3 +2,6 @@ database
 data
 pysrc/__pycache__
 .venv
+pyproject.toml
+pyrightconfig.json
+main.py
