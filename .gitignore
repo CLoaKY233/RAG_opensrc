@@ -5,3 +5,4 @@ pysrc/__pycache__
 pyproject.toml
 pyrightconfig.json
 main.py
+cleanup
