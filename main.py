@@ -1,7 +1,7 @@
 # main.py
-from src.document_processor import DocumentProcessor
-from src.embeddings_manager import EmbeddingsManager
-from src.rag_engine import RAGEngine
+from pysrc.document_processor import DocumentProcessor
+from pysrc.embeddings_manager import EmbeddingsManager
+from pysrc.rag_engine import RAGEngine
 import logging
 
 logging.basicConfig(level=logging.INFO)
