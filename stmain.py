@@ -1,4 +1,31 @@
-# stmain.py
+"""
+RAG (Retrieval Augmented Generation) Streamlit Application
+
+A web interface for document processing and Q&A using Mistral LLM.
+
+This module serves as the main entry point for the Streamlit application.
+It handles the UI components, file processing, and interaction with the RAG system.
+
+Author: Lay Sheth
+Email: laysheth1@gmail.com
+
+Dependencies:
+- streamlit: Web interface framework
+- langchain: LLM operations and chains
+- chromadb: Vector store
+- sentence-transformers: Text embeddings
+- ollama: LLM interface
+
+Main Features:
+- Document upload and processing
+- Interactive chat interface
+- Document management
+- Configurable settings
+
+Usage:
+    Run with: streamlit run stmain.py
+"""
+
 import streamlit as st
 import time
 from pysrc.document_processor import DocumentProcessor
@@ -12,7 +39,57 @@ import tempfile
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Page configuration
+def process_files(files) -> bool:
+    """
+    Process uploaded files and initialize the RAG engine.
+
+    Args:
+        files: List of uploaded file objects from Streamlit
+
+    Returns:
+        bool: True if processing was successful
+
+    Raises:
+        Exception: If there's an error during file processing
+
+    This function:
+    1. Creates a temporary directory for file storage
+    2. Saves uploaded files
+    3. Initializes document processing and embedding components
+    4. Creates vector store from processed documents
+    5. Initializes RAG engine with the vector store
+    """
+    try:
+        temp_dir = tempfile.mkdtemp()
+        data_path = os.path.join(temp_dir, "data")
+        os.makedirs(data_path, exist_ok=True)
+
+        # Save uploaded files
+        for uploaded_file in files:
+            file_path = os.path.join(data_path, uploaded_file.name)
+            with open(file_path, "wb") as f:
+                f.write(uploaded_file.getvalue())
+
+        # Initialize components
+        doc_processor = DocumentProcessor(data_path)
+        embeddings_manager = EmbeddingsManager("database")
+
+        # Process documents
+        documents = doc_processor.load_and_split_documents()
+        vector_store = embeddings_manager.create_vector_store(documents)
+
+        # Initialize RAG engine
+        st.session_state.rag_engine = RAGEngine(vector_store)
+        st.session_state.doc_stats["processed"] = len(files)
+        st.session_state.doc_stats["chunks"] = len(documents)
+
+        return True
+
+    except Exception as e:
+        logger.error(f"Error processing files: {str(e)}")
+        raise
+
+# Initialize Streamlit page configuration
 st.set_page_config(
     page_title="RAG with Mistral",
     page_icon="🤖",
@@ -20,13 +97,20 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Initialize session states
+# Initialize session states for persistent data storage
 if 'rag_engine' not in st.session_state:
-    st.session_state.rag_engine = None
+    st.session_state.rag_engine = None  # Stores RAG engine instance
 if 'chat_history' not in st.session_state:
-    st.session_state.chat_history = []
+    st.session_state.chat_history = []  # Stores chat messages
 if 'doc_stats' not in st.session_state:
-    st.session_state.doc_stats = {"processed": 0, "chunks": 0}
+    st.session_state.doc_stats = {"processed": 0, "chunks": 0}  # Stores document statistics
+
+# UI Components are organized in sections:
+# 1. Sidebar: Shows app title and document statistics
+# 2. Tab1 (Chat): Handles chat interface and message display
+# 3. Tab2 (Documents): Manages document upload and processing
+# 4. Tab3 (Settings): Controls for RAG engine parameters
+# 5. Footer: Credits and additional information
 
 def process_files(files) -> bool:
     """Process uploaded files and initialize RAG engine"""

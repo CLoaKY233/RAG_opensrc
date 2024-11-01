@@ -1,4 +1,24 @@
 # pysrc/rag_engine.py
+
+"""
+RAG Engine Implementation
+
+Handles the integration of LLM with vector store for question answering.
+
+Author: Lay Sheth
+Email: laysheth1@gmail.com
+
+Dependencies:
+- langchain
+- ollama
+
+Key Components:
+- LLM initialization
+- QA chain setup
+- Question answering logic
+"""
+
+
 from langchain.llms import Ollama
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate

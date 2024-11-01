@@ -1,4 +1,23 @@
 # pysrc/embeddings_manager.py
+"""
+Embeddings Management Module
+
+Handles document embeddings and vector store operations.
+
+Author: Lay Sheth
+Email: laysheth1@gmail.com
+
+Dependencies:
+- langchain
+- sentence-transformers
+- chromadb
+
+Key Features:
+- Document embedding generation
+- Vector store creation and management
+"""
+
+
 from langchain_community.embeddings import SentenceTransformerEmbeddings  # Changed this line
 from langchain_community.vectorstores import Chroma
 import logging

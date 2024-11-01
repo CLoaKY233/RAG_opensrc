@@ -1,4 +1,25 @@
 # pysrc/document_processor.py
+"""
+Document Processing Module
+
+Handles document loading and text splitting operations.
+
+Author: Lay Sheth
+Email: laysheth1@gmail.com
+
+Dependencies:
+- langchain
+- python standard libraries (os, logging)
+
+Key Features:
+- Document loading from directory
+- Text splitting into manageable chunks
+- Document metadata handling
+"""
+
+
+
+
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 import logging
