@@ -1,5 +1,5 @@
 # pysrc/rag_engine.py
-from langchain_community.llms import Ollama
+from langchain.llms import Ollama
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 import logging
@@ -7,9 +7,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 class RAGEngine:
-    def __init__(self, vector_store, model_name="mistral"):
+    def __init__(self, vector_store):
         self.vector_store = vector_store
-        self.model_name = model_name
         self.temperature = 0.7
         self.context_length = 3
         self.llm = self._initialize_llm()
@@ -17,7 +16,7 @@ class RAGEngine:
 
     def _initialize_llm(self):
         return Ollama(
-            model=self.model_name,
+            model="mistral",
             temperature=self.temperature
         )
 
@@ -47,16 +46,9 @@ class RAGEngine:
             return_source_documents=True
         )
 
-    def update_model(self, model_name: str):
-        self.model_name = model_name
-        self.llm = self._initialize_llm()
-        self.qa_chain = self._setup_qa_chain()
-
-    def update_settings(self, temperature: float = None, context_length: int = None):
-        if temperature is not None:
-            self.temperature = temperature
-        if context_length is not None:
-            self.context_length = context_length
+    def update_settings(self, temperature: float, context_length: int):
+        self.temperature = temperature
+        self.context_length = context_length
         self.llm = self._initialize_llm()
         self.qa_chain = self._setup_qa_chain()
 
