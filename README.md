@@ -62,7 +62,7 @@ ollama pull mistral
 
 1. Start the Streamlit application:
 ```bash
-streamlit run llms/stmain.py
+streamlit run stmain.py
 ```
 
 2. Access the web interface at `http://localhost:8501`
