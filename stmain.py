@@ -7,7 +7,6 @@ from pysrc.rag_engine import RAGEngine
 import logging
 import os
 import tempfile
-from typing import List, Optional
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -15,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 # Page configuration
 st.set_page_config(
-    page_title="Enhanced RAG-LLM",
+    page_title="RAG with Mistral",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -26,8 +25,6 @@ if 'rag_engine' not in st.session_state:
     st.session_state.rag_engine = None
 if 'chat_history' not in st.session_state:
     st.session_state.chat_history = []
-if 'current_model' not in st.session_state:
-    st.session_state.current_model = "mistral"
 if 'doc_stats' not in st.session_state:
     st.session_state.doc_stats = {"processed": 0, "chunks": 0}
 
@@ -53,7 +50,7 @@ def process_files(files) -> bool:
         vector_store = embeddings_manager.create_vector_store(documents)
 
         # Initialize RAG engine
-        st.session_state.rag_engine = RAGEngine(vector_store, st.session_state.current_model)
+        st.session_state.rag_engine = RAGEngine(vector_store)
         st.session_state.doc_stats["processed"] = len(files)
         st.session_state.doc_stats["chunks"] = len(documents)
 
@@ -65,19 +62,7 @@ def process_files(files) -> bool:
 
 # Sidebar
 with st.sidebar:
-    st.title("🤖 RAG-LLM Assistant")
-
-    # Model selection
-    st.subheader("Model Configuration")
-    models = ["mistral", "llama2", "orca-mini"]
-    selected_model = st.selectbox("Select Model", models)
-
-    if selected_model != st.session_state.current_model:
-        with st.spinner("Switching model..."):
-            st.session_state.current_model = selected_model
-            if st.session_state.rag_engine:
-                st.session_state.rag_engine.update_model(selected_model)
-        st.success(f"Switched to {selected_model}")
+    st.title("🤖 RAG with Mistral")
 
     # Document Statistics
     if st.session_state.doc_stats["processed"] > 0:
@@ -185,6 +170,6 @@ with tab3:
 # Footer
 st.divider()
 st.markdown(
-    "<div style='text-align: center'>Powered by Open Source LLMs</div>",
+    "<div style='text-align: center'>Powered by Mistral</div>",
     unsafe_allow_html=True
 )
