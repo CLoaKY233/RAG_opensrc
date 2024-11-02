@@ -6,8 +6,8 @@ A web interface for document processing and Q&A using Mistral LLM.
 This module serves as the main entry point for the Streamlit application.
 It handles the UI components, file processing, and interaction with the RAG system.
 
-Author: Lay Sheth
-Email: laysheth1@gmail.com
+Author: Lay Sheth, Rishav Raj
+
 
 Dependencies:
 - streamlit: Web interface framework
