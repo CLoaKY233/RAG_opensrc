@@ -1,7 +1,35 @@
-# Create test data
+# pysrc/test_data.py
+
+"""
+Test Data Creation Script
+
+Creates sample text files for testing the document processing and embedding pipeline.
+
+Author: Lay Sheth
+Email: laysheth1@gmail.com
+
+Dependencies:
+- python standard libraries (os)
+"""
+
+# -----------------------------------------
+# Imports
+# -----------------------------------------
+
 import os
+
+# -----------------------------------------
+# Test Data Creation
+# -----------------------------------------
+
+# Create the 'data' directory if it doesn't exist
 os.makedirs("data", exist_ok=True)
-with open("data/sample.txt", "w", encoding='utf-8') as f:
+
+# Define the path to the sample text file
+sample_file_path = os.path.join("data", "sample.txt")
+
+# Write sample content to the text file
+with open(sample_file_path, "w", encoding='utf-8') as f:
     f.write("""
 Artificial Intelligence and Machine Learning Overview
 
